@@ -10,12 +10,20 @@ const Button = ({ handleClick, text }) => {
 
 const Total = ({ text, amount }) => <p>{text} {amount}</p>
 
-const Statistics = ({ sum, average, positive }) => {
+const Statistics = ({ scores, ...props }) => {
+  if (props.sum === 0) {
+    return <p>No feedback given</p>
+  }
+
   return (
     <div>
-      <p>all {sum}</p>
-      <p>average {average}</p>
-      <p>positive {positive} %</p>
+      <Total text='good' amount={scores[0]} />
+      <Total text='neutral' amount={scores[1]} />
+      <Total text='bad' amount={scores[2]} />
+
+      <Total text='sum' amount={props.sum} />
+      <Total text='average' amount={props.average} />
+      <Total text='positive' amount={props.positive} />
     </div>
   )
 }
@@ -57,11 +65,7 @@ const App = () => {
 
       <Header text='statistics' />
 
-      <Total text='good' amount={good} />
-      <Total text='neutral' amount={neutral} />
-      <Total text='bad' amount={bad} />
-
-      <Statistics sum={sum} average={average / sum} positive={positive} />
+      <Statistics scores={scores} sum={sum} average={average / sum} positive={positive} />
     </div>
   )
 }
