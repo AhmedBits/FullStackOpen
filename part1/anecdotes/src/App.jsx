@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
-const Story = ({ text }) => <p>{text}</p>
+const Anecdote = ({ text }) => <p>{text}</p>
+
+const Votes = ({ votes }) => <p>has {votes} votes</p>
 
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
@@ -17,18 +19,31 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+
+  const length = anecdotes.length
    
   const [selected, setSelected] = useState(0)
-  const length = anecdotes.length
+  const [votes, setVotes] = useState(
+    new Uint8Array(length)
+  )
 
-  const handleClick = () => {
+  const randomAnecdote = () => {
     setSelected(Math.floor(Math.random() * length))
+  }
+
+  const castVote = () => {
+    const temp = [...votes]
+    temp[selected] += 1
+    setVotes(temp)
   }
 
   return (
     <div>
-      <Story text={anecdotes[selected]} />
-      <Button handleClick={handleClick} text='next anecdote' />
+      <Anecdote text={anecdotes[selected]} />
+      <Votes votes={votes[selected]} />
+
+      <Button handleClick={castVote} text='vote' />
+      <Button handleClick={randomAnecdote} text='next anecdote' />
     </div>
   )
 }
