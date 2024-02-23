@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
+const Header = ({ text }) => <h1>{text}</h1>
+
 const Anecdote = ({ text }) => <p>{text}</p>
 
 const Votes = ({ votes }) => <p>has {votes} votes</p>
 
-const Button = ({ handleClick, text }) => (
-  <button onClick={handleClick}>{text}</button>
-)
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
 const App = () => {
   const anecdotes = [
@@ -37,13 +37,21 @@ const App = () => {
     setVotes(temp)
   }
 
+  const sortedVotes = [...votes].sort((a, b) => b - a)[0]
+  const mostVotes = votes.indexOf(sortedVotes)
+
   return (
     <div>
+      <Header text='Anecdote of the day' />
       <Anecdote text={anecdotes[selected]} />
       <Votes votes={votes[selected]} />
 
       <Button handleClick={castVote} text='vote' />
       <Button handleClick={randomAnecdote} text='next anecdote' />
+
+      <Header text='Anecdote with the most votes' />
+      <Anecdote text={anecdotes[mostVotes]} />
+      <Votes votes={sortedVotes} />
     </div>
   )
 }
