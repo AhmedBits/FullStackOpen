@@ -9,13 +9,25 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
+
+    if (nameExists(newName)) {
+      alert(`${newName} is already added to phonebook`)
+      setNewName('')
+      return
+    }
+
     const personObject = {
       name: newName,
-      id: persons.length + 1
+      id: persons.length + 1,
     }
 
     setPersons(persons.concat(personObject))
     setNewName('')
+  }
+
+  const nameExists = (newName) => {
+    const name = persons.find(person => person.name === newName)
+    return name === undefined ? false : true
   }
 
   const handleNameChange = (event) => {
@@ -37,11 +49,9 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul>
-        {persons.map(person => 
-          <Persons key={person.id} person={person} />
-        )}
-      </ul>
+      {persons.map(person => 
+        <Persons key={person.name} person={person} />
+      )}
     </div>
   )
 }
