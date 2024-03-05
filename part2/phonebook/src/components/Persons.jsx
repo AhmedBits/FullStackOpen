@@ -1,6 +1,14 @@
-const Persons = ({ person }) => {
+import Person from "./Person"
+
+const Persons = ({ names }) => {
 	return (
-		<p>{person.name}: {person.number}</p>
+		names.map(person => 
+			<Person 
+				key={person.name} 
+				name={person.name}
+				number={person.number}
+			/>
+		)
 	)
 }
 
