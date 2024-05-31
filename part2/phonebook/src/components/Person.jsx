@@ -1,6 +1,16 @@
-const Person = ({name, number}) => {
+import Button from "./Button"
+
+const Person = ({id, name, number, handleClick}) => {
 	return (
-		<p>{name}: {number}</p>
+		<p>
+			{name}: {number} {
+				<Button 
+					handleClick={() => handleClick(id)}
+					type='submit'
+					text='delete'
+				/>
+			}
+		</p>
 	)
 }
 
