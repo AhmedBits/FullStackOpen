@@ -27,7 +27,23 @@ const App = () => {
   const addContact = (event) => {
     event.preventDefault()
     if (nameExists(newName)) {
-      alert(`${newName} is already added to phonebook`)
+      if (
+        confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+      ) {
+        const personToUpdate = persons.find(p => p.name === newName)
+        const personObject = {...personToUpdate, number: newNumber}
+        
+        personService
+          .update(personObject, personObject.id)
+            .then(returnedPerson => {
+              setPersons(persons.map(p => p.id !== personObject.id ? p : returnedPerson))
+            })
+            .catch(error => {
+              alert(
+                `${personObject.name} was already deleted from the server`
+              )
+            })
+      }
       clear()
       return
     }
