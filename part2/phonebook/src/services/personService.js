@@ -12,21 +12,7 @@ const create = newObject => {
 }
 
 const deletePerson = id => {
-	const urlToDelete = `${baseUrl}/${id}`
-
-	getAll()
-		.then(people => {
-			const personToDelete = people.find(person => person.id === id)
-			
-			if (confirm(`Delete ${personToDelete.name}?`)) {
-				return axios.delete(urlToDelete)
-			}
-		})
-		.catch(error => {
-			alert(
-				'The person was already deleted from the server'
-			)
-		})
+	return axios.delete(`${baseUrl}/${id}`)
 }
 
 export default { 

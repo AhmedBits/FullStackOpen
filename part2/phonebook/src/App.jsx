@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Input from './components/Input'
-import personService from './services/numberService'
-import numberService from './services/numberService'
+import personService from './services/personService'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -44,6 +43,21 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           clear()
         })
+  }
+
+  const deleteContact = id => {
+    const personToDelete = persons.find(p => p.id === id)
+
+    if (confirm(`Delete ${personToDelete.name}?`)) {
+      personService
+        .deletePerson(id)
+        .catch(error => {
+          alert(
+            `${personToDelete.name} was already deleted from the server`
+          )
+        })
+      setPersons(persons.filter(p => p.id !== id))
+    }
   }
 
   const namesToShow = newSearch === ''
@@ -97,7 +111,7 @@ const App = () => {
       <h3>Numbers</h3>
       <Persons
         names={namesToShow}
-        handleClick={numberService.deletePerson}
+        handleClick={deleteContact}
       />
     </div>
   )
