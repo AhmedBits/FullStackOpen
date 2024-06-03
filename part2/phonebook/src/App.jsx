@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react'
+import personService from './services/personService'
+import Notification from './components/Notification'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Input from './components/Input'
-import personService from './services/personService'
+import './index.css'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [notification, setNotification] = useState(null)
+  const [notificationType, setNotificationType] = useState(null)
 
   useEffect(() => {
     personService
@@ -37,6 +41,12 @@ const App = () => {
           .update(personObject, personObject.id)
             .then(returnedPerson => {
               setPersons(persons.map(p => p.id !== personObject.id ? p : returnedPerson))
+              setNotification(`Changed ${returnedPerson.name}'s number`)
+              setNotificationType('success')
+              setTimeout(() => {
+                setNotification(null)
+                setNotificationType(null)
+              }, 5000)
             })
             .catch(error => {
               alert(
@@ -57,6 +67,12 @@ const App = () => {
       .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setNotification(`Added ${returnedPerson.name}`)
+          setNotificationType('success')
+          setTimeout(() => {
+            setNotification(null)
+            setNotificationType(null)
+          }, 5000)
           clear()
         })
   }
@@ -113,6 +129,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification 
+        message={notification} 
+        type={notificationType}
+      />
       <Input 
         text='filter shown with '
         handleChange={handleSearchChange}
