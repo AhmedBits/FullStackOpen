@@ -28,6 +28,15 @@ const App = () => {
     setNewSearch('')
   }
 
+  const createNotification = (message, type) => {
+    setNotification(message)
+    setNotificationType(type)
+    setTimeout(() => {
+      setNotification(null)
+      setNotificationType(null)
+    }, 5000)
+  }
+
   const addContact = (event) => {
     event.preventDefault()
     if (nameExists(newName)) {
@@ -41,16 +50,16 @@ const App = () => {
           .update(personObject, personObject.id)
             .then(returnedPerson => {
               setPersons(persons.map(p => p.id !== personObject.id ? p : returnedPerson))
-              setNotification(`Changed ${returnedPerson.name}'s number`)
-              setNotificationType('success')
-              setTimeout(() => {
-                setNotification(null)
-                setNotificationType(null)
-              }, 5000)
+              createNotification(
+                `Changed ${returnedPerson.name}'s number`,
+                'success'
+              )
             })
             .catch(error => {
-              alert(
-                `${personObject.name} was already deleted from the server`
+              setPersons(persons.filter(p => p.id !== personObject.id))
+              createNotification(
+                `${personObject.name} was already deleted from the server`,
+                'error'
               )
             })
       }
@@ -67,12 +76,10 @@ const App = () => {
       .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          setNotification(`Added ${returnedPerson.name}`)
-          setNotificationType('success')
-          setTimeout(() => {
-            setNotification(null)
-            setNotificationType(null)
-          }, 5000)
+          createNotification(
+            `Added ${returnedPerson.name}`,
+            'success'
+          )
           clear()
         })
   }
@@ -83,9 +90,16 @@ const App = () => {
     if (confirm(`Delete ${personToDelete.name}?`)) {
       personService
         .deletePerson(id)
+        .then(response => {
+          createNotification(
+            `Deleted ${personToDelete.name}`,
+            'success'
+          )
+        })
         .catch(error => {
-          alert(
-            `${personToDelete.name} was already deleted from the server`
+          createNotification(
+            `${personToDelete.name} was already deleted from the server`,
+            'error'
           )
         })
       setPersons(persons.filter(p => p.id !== id))
