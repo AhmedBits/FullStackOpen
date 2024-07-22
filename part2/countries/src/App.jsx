@@ -44,6 +44,14 @@ const App = () => {
     else if (length === 0) setDisplay('No matches')
   }
 
+  const selectCountry = (country) => {
+    countryService
+      .searchedCountry(country)
+      .then(response => {
+        setDisplay(response)
+      })
+  }
+
   return (
     <div>
       <Searchbar
@@ -53,6 +61,7 @@ const App = () => {
       />
       <Display
         display={display}
+        handleClick={selectCountry}
       />
     </div>
   )

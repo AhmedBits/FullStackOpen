@@ -2,15 +2,16 @@ import Message from "./Message"
 import Countrylist from "./Countrylist"
 import Countryinfo from "./Countryinfo"
 
-const Display = ({ display }) => {
+const Display = ({ display, handleClick }) => {
   if (display === null) return null
 
   if (Array.isArray(display)) {
     return (
       display.map((country, index) =>
         <Countrylist
-          country={country}
           key={index}
+          country={country}
+          handleClick={handleClick}
         />
       )
     )
