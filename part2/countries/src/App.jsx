@@ -52,10 +52,12 @@ const App = () => {
       })
   }
 
+  if (allCountries === null) return null
+
   return (
     <div>
       <Searchbar
-        text='find countries'
+        text='Find countries:'
         handleChange={handleSearchChange}
         value={search}
       />
