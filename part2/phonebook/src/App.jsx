@@ -71,6 +71,14 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
+    
+    if (!newName || !newNumber) {
+      createNotification(
+        'Must include a name and number',
+        'error'
+      )
+      return
+    }
 
     personService
       .create(personObject)
