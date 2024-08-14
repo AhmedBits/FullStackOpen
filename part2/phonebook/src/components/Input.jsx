@@ -4,6 +4,7 @@ const Input = ({ text, handleChange, value }) => {
       {text} <input 
         onChange={handleChange}
         value={value}
+        name='input'
       />
     </div>
   )
