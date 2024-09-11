@@ -56,11 +56,18 @@ const App = () => {
               )
             })
             .catch(error => {
-              setPersons(persons.filter(p => p.id !== personObject.id))
-              createNotification(
-                `${personObject.name} was already deleted from the server`,
-                'error'
-              )
+              if (error.response.data.error) {
+                createNotification(
+                  `${error.response.data.error}`,
+                  'error'
+                )
+              } else {
+                setPersons(persons.filter(p => p.id !== personObject.id))
+                createNotification(
+                  `${personObject.name} was already deleted from the server`,
+                  'error'
+                )
+              }
             })
       }
       clear()
