@@ -90,6 +90,12 @@ const App = () => {
           )
           clear()
         })
+        .catch(error => {
+          createNotification(
+            `${error.response.data.error}`,
+            'error'
+          )
+        })
   }
 
   const deleteContact = id => {
