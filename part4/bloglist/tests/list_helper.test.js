@@ -89,3 +89,13 @@ describe('total likes', () => {
     assert.strictEqual(result, 36)
   })  
 })
+
+describe('most likes', () => {
+  const blogs = [{likes: 5}, {likes: 2}, {likes: 7}]
+
+  test('works when given a list of blogs', () => {
+  
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, {likes: 7})
+  })
+})
