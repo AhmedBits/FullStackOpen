@@ -34,6 +34,27 @@ test('each blog has an "id" field', async () => {
   })
 })
 
+test('successfully creates a new blog post', async () => {
+  const newBlog = {
+    title: "Canonical string reduction",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    likes: 12
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  const response = await api.get('/api/blogs')
+  const titles = response.body.map(r => r.title)
+
+  assert.strictEqual(response.body.length, initialBlogs.length + 1)
+  assert(titles.includes(newBlog.title))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
