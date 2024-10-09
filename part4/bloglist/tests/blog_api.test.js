@@ -13,7 +13,7 @@ beforeEach(async () => {
   await Blog.insertMany(initialBlogs)
 })
 
-describe('blog database', () => {
+describe('when there are initially some blogs saved', () => {
   test('response is in JSON format', async () => {
     await api
       .get('/api/blogs')
