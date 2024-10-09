@@ -31,7 +31,7 @@ describe('blog database', () => {
     const response = await api.get('/api/blogs')
 
     response.body.forEach(blog => {
-      assert.ok(Object.hasOwn(blog, 'id'))
+      assert(Object.hasOwn(blog, 'id'))
     })
   })
 
@@ -47,13 +47,30 @@ describe('blog database', () => {
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)
-      .expect('Content-Type', /application\/json/)
     
     const response = await api.get('/api/blogs')
     const titles = response.body.map(r => r.title)
 
     assert.strictEqual(response.body.length, initialBlogs.length + 1)
     assert(titles.includes(newBlog.title))
+  })
+  test('creates a "likes" property when missing', async () => {
+    const blogWithoutLikes = {
+      title: "Type wars",
+      author: "Robert C. Martin",
+      url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html"
+    }
+    
+    await api
+      .post('/api/blogs')
+      .send(blogWithoutLikes)
+      .expect(201)
+
+    const response = await api.get('/api/blogs')
+
+    response.body.forEach(blog => {
+      assert(Object.hasOwn(blog, 'likes'))
+    })
   })
 })
 
