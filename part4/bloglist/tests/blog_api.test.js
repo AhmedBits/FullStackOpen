@@ -31,7 +31,7 @@ describe('blog database', () => {
     const response = await api.get('/api/blogs')
 
     response.body.forEach(blog => {
-      assert(Object.hasOwn(blog, 'id'))
+      assert('id' in blog)
     })
   })
 
@@ -69,7 +69,25 @@ describe('blog database', () => {
     const response = await api.get('/api/blogs')
 
     response.body.forEach(blog => {
-      assert(Object.hasOwn(blog, 'likes'))
+      assert('likes' in blog)
+    })
+  })
+  test('responds with 400 error code when missing properties', async () => {
+    const blogWithoutProperties = {
+      author: "ShouldntSave",
+      likes: 3
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(blogWithoutProperties)
+      .expect(400)
+    
+    const response = await api.get('/api/blogs')
+    const authors = response.body.map(r => r.author)
+
+    authors.forEach(author => {
+      assert(author !== blogWithoutProperties.author)
     })
   })
 })
