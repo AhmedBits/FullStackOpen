@@ -1,3 +1,5 @@
+const Blog = require('../models/blog')
+
 const initialBlogs = [
   {
     _id: "5a422a851b54a676234d17f7",
@@ -17,4 +19,21 @@ const initialBlogs = [
   }
 ]
 
-module.exports = initialBlogs
+const fakeId = async () => {
+  const blog = new Blog({ title: 'toBeDeleted' })
+  await blog.save()
+  await blog.deleteOne()
+
+  return blog._id.toString()
+}
+
+const blogsInDB = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
+module.exports = {
+  initialBlogs,
+  fakeId,
+  blogsInDB
+}
