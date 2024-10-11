@@ -4,7 +4,7 @@ const Blog = require('../models/blog')
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
 
-  return response.json(blogs)
+  response.json(blogs)
 })
 
 blogsRouter.post('/', async (request, response) => {
@@ -18,7 +18,7 @@ blogsRouter.post('/', async (request, response) => {
     ? new Blog(newBlog) : new Blog({...newBlog, likes: 0})
 
   const savedBlog = await blogToSave.save()
-  return response.status(201).json(savedBlog)
+  response.status(201).json(savedBlog)
 })
 
 module.exports = blogsRouter
