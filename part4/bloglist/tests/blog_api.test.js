@@ -6,11 +6,11 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
-const initialBlogs = require('./test_helper')
+const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(initialBlogs)
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 describe('when there are initially some blogs saved', () => {
@@ -22,15 +22,15 @@ describe('when there are initially some blogs saved', () => {
   })
 
   test('has correct number of blogs', async () => {
-    const response = await api.get('/api/blogs')
+    const blogsAtEnd = await helper.blogsInDB()
     
-    assert.strictEqual(response.body.length, initialBlogs.length)
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
   })
 
   test('gives each blog an "id" field', async () => {
-    const response = await api.get('/api/blogs')
+    const blogsAtEnd = await helper.blogsInDB()
 
-    response.body.forEach(blog => {
+    blogsAtEnd.forEach(blog => {
       assert('id' in blog)
     })
   })
@@ -48,10 +48,10 @@ describe('when there are initially some blogs saved', () => {
       .send(newBlog)
       .expect(201)
     
-    const response = await api.get('/api/blogs')
-    const titles = response.body.map(r => r.title)
+    const blogsAtEnd = await helper.blogsInDB()
+    const titles = blogsAtEnd.map(b => b.title)
 
-    assert.strictEqual(response.body.length, initialBlogs.length + 1)
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
     assert(titles.includes(newBlog.title))
   })
   test('creates a "likes" property when missing', async () => {
@@ -66,9 +66,9 @@ describe('when there are initially some blogs saved', () => {
       .send(blogWithoutLikes)
       .expect(201)
 
-    const response = await api.get('/api/blogs')
+    const blogsAtEnd = await helper.blogsInDB()
 
-    response.body.forEach(blog => {
+    blogsAtEnd.forEach(blog => {
       assert('likes' in blog)
     })
   })
@@ -83,8 +83,8 @@ describe('when there are initially some blogs saved', () => {
       .send(blogWithoutProperties)
       .expect(400)
     
-    const response = await api.get('/api/blogs')
-    const authors = response.body.map(r => r.author)
+    const blogsAtEnd = await helper.blogsInDB()
+    const authors = blogsAtEnd.map(b => b.author)
 
     authors.forEach(author => {
       assert(author !== blogWithoutProperties.author)
