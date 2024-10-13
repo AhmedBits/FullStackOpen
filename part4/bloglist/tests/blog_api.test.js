@@ -105,12 +105,41 @@ describe('when there are initially some blogs saved', () => {
     const ids = blogsAfter.map(b => b.id)
     assert(!ids.includes(blogToDelete.id))
   })
-  test('exits with 400 if id is invalid', async () => {
+  test('cancels deletion if id is invalid', async () => {
     const invalidId = await helper.fakeId()
     
     await api
       .delete(`/api/blogs/${invalidId}`)
-      .expect(400)
+      .expect(404)
+  })
+  test('updates a blogs likes', async () => {
+    const blogs = await helper.blogsInDB()
+    const blogToUpdate = blogs[0]
+    
+    const updatedBlog = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 1
+    }
+    
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+    
+    const savedBlog = await Blog.findById(updatedBlog.id)
+    assert.strictEqual(savedBlog.likes, blogToUpdate.likes + 1)
+  })
+  test('cancels update if id is invalid', async () => {
+    const invalidId = await helper.fakeId()
+    const blog = {
+      title: 'required property',
+      url: 'required property'
+    }
+
+    await api
+      .put(`/api/blogs/${invalidId}`)
+      .send(blog)
+      .expect(404)
   })
 })
 
