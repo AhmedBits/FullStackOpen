@@ -53,6 +53,7 @@ describe('when there are initially some blogs saved', () => {
 
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
     assert(titles.includes(newBlog.title))
+    
   })
   test('creates a "likes" property when missing', async () => {
     const blogWithoutLikes = {
@@ -89,6 +90,27 @@ describe('when there are initially some blogs saved', () => {
     authors.forEach(author => {
       assert(author !== blogWithoutProperties.author)
     })
+  })
+  test('a blog can be deleted', async () => {
+    const blogsBefore = await helper.blogsInDB()
+    const blogToDelete = blogsBefore[0]
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
+    const blogsAfter = await helper.blogsInDB()
+    assert.strictEqual(blogsBefore.length, blogsAfter.length + 1)
+
+    const ids = blogsAfter.map(b => b.id)
+    assert(!ids.includes(blogToDelete.id))
+  })
+  test('exits with 400 if id is invalid', async () => {
+    const invalidId = await helper.fakeId()
+    
+    await api
+      .delete(`/api/blogs/${invalidId}`)
+      .expect(400)
   })
 })
 
