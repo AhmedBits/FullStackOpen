@@ -47,7 +47,7 @@ describe('when there is initially one user in db', () => {
     await api
       .post('/api/users')
       .send(newUser)
-      .expect(400)
+      .expect(401)
     
     const usersAtEnd = await helper.usersInDB()
     assert.strictEqual(usersAtEnd.length, 1)
@@ -79,14 +79,14 @@ describe('when there is initially one user in db', () => {
     await api
       .post('/api/users')
       .send(newUser)
-      .expect(400)
+      .expect(409)
     
     const usersAtEnd = await helper.usersInDB()
     assert.strictEqual(usersAtEnd.length, 1)
 
     const usernames = usersAtEnd.map(u => u.username)
     const usersNamedRoot = usernames.filter(u => u.includes('root'))
-    assert.strictEqual(usersNamedRoot, 1)
+    assert.strictEqual(usersNamedRoot.length, 1)
   })
 })
 
