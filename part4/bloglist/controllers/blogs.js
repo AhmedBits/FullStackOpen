@@ -18,12 +18,15 @@ blogsRouter.post('/', async (request, response) => {
 
   if (!decodedToken.id) {
     return response.status(401).json({ 
-      error: 'Invalid token' })
+      error: 'Invalid token'
+    })
   }
   const newBlog = request.body
 
   if (!('title' in newBlog && 'url' in newBlog)) {
-    return response.status(400).json({ error: 'Missing title/url' })
+    return response.status(400).json({
+      error: 'Missing title/url'
+    })
   }
 
   const user = await User.findById(decodedToken.id)
@@ -41,12 +44,28 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   const blogToDelete = await Blog.findById(request.params.id)
-
-  if (blogToDelete) {
-    await Blog.findByIdAndDelete(request.params.id)
-    return response.status(204).end()
+  if (!blogToDelete) {
+    return response.status(404).json({
+      error: 'Nonexistent Blog'
+    })
   }
-  response.status(404).end()
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({
+      error: 'Invalid token'
+    })
+  }
+
+  const requestedUser = await User.findById(decodedToken.id)
+  if (blogToDelete.user.toString() !== requestedUser.id) {
+    return response.status(401).json({
+      error: 'Action limited to blog creator'
+    })
+  }
+
+  await Blog.findByIdAndDelete(blogToDelete.id)
+  response.status(204).end()
 })
 
 blogsRouter.put('/:id', async (request, response) => {
