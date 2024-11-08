@@ -8,9 +8,25 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
 
+const obtainToken = async () => {
+  const testUser = helper.testUser
+
+  const response = await api
+    .post('/api/login')
+    .send(testUser)
+
+  return response.body.token
+}
+
 beforeEach(async () => {
   await Blog.deleteMany({})
-  await Blog.insertMany(helper.initialBlogs)
+  
+  for (blog of helper.initialBlogs) {
+    await api
+      .post('/api/blogs')
+      .set({ Authorization: `Bearer ${await obtainToken()}` })
+      .send(blog) 
+  }
 })
 
 describe('when there are initially some blogs saved', () => {
@@ -48,6 +64,7 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(newBlog)
         .expect(201)
       
@@ -66,6 +83,7 @@ describe('when there are initially some blogs saved', () => {
       
       await api
         .post('/api/blogs')
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(blogWithoutLikes)
         .expect(201)
 
@@ -83,6 +101,7 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(blogWithoutProperties)
         .expect(400)
       
@@ -93,6 +112,22 @@ describe('when there are initially some blogs saved', () => {
         assert(author !== blogWithoutProperties.author)
       })
     })
+    test(`fails with 'Unauthorized' if token isnt provided`, async () => {
+      const newBlog = {
+        title: "Canonical string reduction",
+        author: "Edsger W. Dijkstra",
+        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+        likes: 12
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+      
+      const blogsAtEnd = await helper.blogsInDB()
+      assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+    })
   })
 
   describe('delete requests', () => {
@@ -102,6 +137,7 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .expect(204)
       
       const blogsAfter = await helper.blogsInDB()
@@ -115,6 +151,7 @@ describe('when there are initially some blogs saved', () => {
       
       await api
         .delete(`/api/blogs/${invalidId}`)
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .expect(404)
     })
   })

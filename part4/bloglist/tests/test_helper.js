@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 const User = require('../models/user')
+require('dotenv').config()
 
 const initialBlogs = [
   {
@@ -34,9 +35,12 @@ const usersInDB = async () => {
   return users.map(user => user.toJSON())
 }
 
+const testUser = JSON.parse(process.env.TEST_USER)
+
 module.exports = {
   initialBlogs,
   fakeId,
   blogsInDB,
-  usersInDB
+  usersInDB, 
+  testUser
 }
