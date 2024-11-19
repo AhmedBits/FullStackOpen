@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +12,10 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [notification, setNotification] = useState({
+    message: null,
+    type: null
+  })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -26,6 +31,19 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  // Clears notifications
+  useEffect(() => {
+    if (notification.message) {
+      const timeout = setTimeout(() => {
+        setNotification({
+          message: null,
+          type: null
+        })
+      }, 5000)
+      return () => clearTimeout(timeout)
+    }
+  }, [notification])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -43,7 +61,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log(exception)
+      setNotification({
+        message: 'Invalid Username/Password',
+        type: 'error'
+      })
     }
   }
 
@@ -63,8 +84,12 @@ const App = () => {
         author,
         url
       }
-
       await blogService.create(newBlog)
+      
+      setNotification({
+        message: `a new blog "${title}" by ${author} is added`,
+        type: 'success'
+      })
       setTitle('')
       setAuthor('')
       setUrl('')
@@ -73,7 +98,10 @@ const App = () => {
       const blogs = await blogService.getAll()
       setBlogs(blogs)
     } catch (exception) {
-      console.log(exception)
+      setNotification({
+        message: 'Failed to add blog - Ensure fields are filled',
+        type: 'error'
+      })
     }
   }
 
@@ -81,6 +109,10 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification
+          message={notification.message}
+          type={notification.type}
+        />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -90,6 +122,7 @@ const App = () => {
               name="Username"
               autoComplete="off"
               onChange={({ target }) => setUsername(target.value)}
+              required
             />
           </div>
           <div>
@@ -99,6 +132,7 @@ const App = () => {
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
+              required
             />
           </div>
           <button>login</button>
@@ -110,6 +144,10 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification
+        message={notification.message}
+        type={notification.type}
+      />
       <div>
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
