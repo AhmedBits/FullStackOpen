@@ -154,6 +154,18 @@ describe('when there are initially some blogs saved', () => {
         .set({ Authorization: `Bearer ${await obtainToken()}` })
         .expect(404)
     })
+    test('deletion fails when requested by invalid user', async () => {
+      const blogsBefore = await helper.blogsInDB()
+      const blogToDelete = blogsBefore[0]
+
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .set({ Authorization: `Bearer ${helper.invalidId}` })
+        .expect(401)
+
+      const blogsAtEnd = await helper.blogsInDB()
+      assert.strictEqual(blogsAtEnd.length, blogsBefore.length)
+    })
   })
 
   describe('put requests', () => {
@@ -168,6 +180,7 @@ describe('when there are initially some blogs saved', () => {
       
       await api
         .put(`/api/blogs/${blogToUpdate.id}`)
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(updatedBlog)
         .expect(200)
       
@@ -183,8 +196,31 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .put(`/api/blogs/${invalidId}`)
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(blog)
         .expect(404)
+    })
+    test('update fails when missing properties', async () => {
+      const blogs = await helper.blogsInDB()
+      const blogToUpdate = blogs[0]
+      
+      const blogWithoutProperties = {
+        author: "ShouldntSave",
+        likes: 3
+      }
+      
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .set({ Authorization: `Bearer ${await obtainToken()}` })
+        .send(blogWithoutProperties)
+        .expect(400)
+      
+      const blogsAtEnd = await helper.blogsInDB()
+      const authors = blogsAtEnd.map(b => b.author)
+
+      authors.forEach(author => {
+        assert(author !== blogWithoutProperties.author)
+      })
     })
   })
 })
