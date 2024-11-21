@@ -53,17 +53,32 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   response.status(204).end()
 })
 
-blogsRouter.put('/:id', async (request, response) => {
+blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
   const blogToUpdate = await Blog.findById(request.params.id)
-  const updatedBlog = request.body
-
-  if (blogToUpdate) {
-    const result = await Blog
-      .findByIdAndUpdate(blogToUpdate.id, updatedBlog, { new: true })
-
-    return response.status(200).json(result)
+  if (!blogToUpdate) {
+    return response.status(404).json({
+      error: 'Nonexistent Blog'
+    })
   }
-  response.status(404).end()
+  
+  const updatedBlog = request.body
+  if (!('title' in updatedBlog && 'url' in updatedBlog)) {
+    return response.status(400).json({
+      error: 'Missing title/url'
+    })
+  }
+
+  const user = request.user
+  if (blogToUpdate.user.toString() !== user.id) {
+    return response.status(401).json({
+      error: 'Action limited to blog creator'
+    })
+  }
+
+  const result = await Blog
+    .findByIdAndUpdate(blogToUpdate.id, updatedBlog, { new: true })
+
+  return response.status(200).json(result)
 })
 
 module.exports = blogsRouter
