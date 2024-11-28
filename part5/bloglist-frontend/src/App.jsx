@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -159,7 +160,7 @@ const App = () => {
           <input
             type="text"
             value={title}
-            name="Title"
+            name="title"
             onChange={({ target }) => setTitle(target.value)}
             required
           />
@@ -169,7 +170,7 @@ const App = () => {
           <input
             type="text"
             value={author}
-            name="Author"
+            name="author"
             onChange={({ target }) => setAuthor(target.value)}
             required
           />
@@ -179,7 +180,7 @@ const App = () => {
           <input
             type="url"
             value={url}
-            name="Url"
+            name="url"
             onChange={({ target }) => setUrl(target.value)}
             required
           />

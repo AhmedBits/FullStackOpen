@@ -1,4 +1,4 @@
-const BlogForm = () => {
+const BlogForm = (props) => {
   return (
     <form onSubmit={handleLogin}>
       <div>
