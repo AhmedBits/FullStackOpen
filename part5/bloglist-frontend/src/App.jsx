@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 
 const App = () => {
@@ -76,9 +77,7 @@ const App = () => {
     setUser(null)
   }
 
-  const handleBlogCreation = async (event) => {
-    event.preventDefault()
-
+  const handleBlogCreation = async () => {
     try {
       const newBlog = {
         title,
@@ -100,7 +99,7 @@ const App = () => {
       setBlogs(blogs)
     } catch (exception) {
       setNotification({
-        message: 'Failed to add blog - Ensure fields are filled',
+        message: 'Failed to add blog - try logging in again',
         type: 'error'
       })
     }
@@ -153,40 +152,16 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </div>
-      <h2>create new blog</h2>
-      <form onSubmit={handleBlogCreation}>
-        <div>
-          title:
-          <input
-            type="text"
-            value={title}
-            name="title"
-            onChange={({ target }) => setTitle(target.value)}
-            required
-          />
-        </div>
-        <div>
-          author:
-          <input
-            type="text"
-            value={author}
-            name="author"
-            onChange={({ target }) => setAuthor(target.value)}
-            required
-          />
-        </div>
-        <div>
-          url:
-          <input
-            type="url"
-            value={url}
-            name="url"
-            onChange={({ target }) => setUrl(target.value)}
-            required
-          />
-        </div>
-        <button>create</button>
-      </form>
+      <br></br>
+      <Togglable
+        handleBlogCreation={handleBlogCreation}
+        handleTitleChange={({ target }) => setTitle(target.value)}
+        handleAuthorChange={({ target }) => setAuthor(target.value)}
+        handleUrlChange={({ target }) => setUrl(target.value)}
+        title={title}
+        author={author}
+        url={url}
+      />
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
