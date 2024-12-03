@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useState, forwardRef, useImperativeHandle } from "react"
 import Button from "./Button"
 
-const Togglable = (props) => {
+const Togglable = forwardRef((props, refs) => {
   const [formVisible, setFormVisible] = useState(false)
 
   const showWhenVisible = { display: formVisible ? '' : 'none' }
@@ -10,6 +10,12 @@ const Togglable = (props) => {
   const toggleVisibility = () => {
     setFormVisible(!formVisible)
   }
+
+  useImperativeHandle(refs, () => {
+    return {
+      toggleVisibility
+    }
+  })
 
   return (
     <div>
@@ -28,6 +34,6 @@ const Togglable = (props) => {
       </div>
     </div>
   )
-}
+})
 
 export default Togglable

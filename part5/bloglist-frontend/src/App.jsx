@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -46,6 +46,8 @@ const App = () => {
     }
   }, [notification])
 
+  const blogFormRef = useRef()
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -78,6 +80,7 @@ const App = () => {
 
   const handleBlogCreation = async (blogObject) => {
     try {
+      blogFormRef.current.toggleVisibility()
       await blogService.create(blogObject)
       const {title, author} = blogObject
       
@@ -146,7 +149,7 @@ const App = () => {
         />
       </div>
       <br></br>
-      <Togglable buttonLabel={'new blog'}>
+      <Togglable buttonLabel={'new blog'} ref={blogFormRef}>
         <BlogForm
           createBlog={handleBlogCreation}
         />
