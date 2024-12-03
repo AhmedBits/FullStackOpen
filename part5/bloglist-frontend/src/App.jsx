@@ -5,6 +5,7 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import InputField from './components/InputField'
 import Button from './components/Button'
 
 const App = () => {
@@ -105,27 +106,23 @@ const App = () => {
           type={notification.type}
         />
         <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              autoComplete="off"
-              onChange={({ target }) => setUsername(target.value)}
-              required
-            />
-          </div>
-          <div>
-            password
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-              required
-            />
-          </div>
+          <InputField
+            text='Username: '
+            type="text"
+            value={username}
+            name="Username"
+            autoComplete="off"
+            handleChange={({ target }) => setUsername(target.value)}
+            required
+          />
+          <InputField
+            text='Password: '
+            type="password"
+            value={password}
+            name="Password"
+            handleChange={({ target }) => setPassword(target.value)}
+            required
+          />
           <Button
             label='Login'
           />

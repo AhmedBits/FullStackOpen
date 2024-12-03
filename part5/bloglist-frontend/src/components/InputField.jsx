@@ -13,6 +13,8 @@ const InputField = ({
         value={value}
         name={name}
         onChange={handleChange}
+        required
+        autoComplete="off"
       />
     </div>
   )
