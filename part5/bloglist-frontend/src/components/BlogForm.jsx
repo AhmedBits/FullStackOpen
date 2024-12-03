@@ -1,4 +1,6 @@
 import { useState } from "react"
+import InputField from "./InputField"
+import Button from "./Button"
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
@@ -22,37 +24,30 @@ const BlogForm = ({ createBlog }) => {
     <div>
       <h2>Create a new Blog</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          title:
-          <input
-            type="text"
-            value={title}
-            name="title"
-            onChange={event => setTitle(event.target.value)}
-            required
-          />
-        </div>
-        <div>
-          author:
-          <input
-            type="text"
-            value={author}
-            name="author"
-            onChange={event => setAuthor(event.target.value)}
-            required
-          />
-        </div>
-        <div>
-          url:
-          <input
-            type="url"
-            value={url}
-            name="url"
-            onChange={event => setUrl(event.target.value)}
-            required
-          />
-        </div>
-        <button>create</button>
+        <InputField
+          text='Title: '
+          type='text'
+          name='title'
+          value={title}
+          handleChange={event => setTitle(event.target.value)}
+        />
+        <InputField
+          text='Author: '
+          type='text'
+          name='author'
+          value={author}
+          handleChange={event => setAuthor(event.target.value)}
+        />
+        <InputField
+          text='Url: '
+          type='text'
+          name='url'
+          value={url}
+          handleChange={event => setUrl(event.target.value)}
+        />
+        <Button
+          label='create'
+        />
       </form>
     </div>
   )
