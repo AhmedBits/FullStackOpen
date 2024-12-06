@@ -53,7 +53,7 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   response.status(204).end()
 })
 
-blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
+blogsRouter.put('/:id', async (request, response) => {
   const blogToUpdate = await Blog.findById(request.params.id)
   if (!blogToUpdate) {
     return response.status(404).json({

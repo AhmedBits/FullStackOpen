@@ -180,7 +180,6 @@ describe('when there are initially some blogs saved', () => {
       
       await api
         .put(`/api/blogs/${blogToUpdate.id}`)
-        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(updatedBlog)
         .expect(200)
       
@@ -196,7 +195,6 @@ describe('when there are initially some blogs saved', () => {
 
       await api
         .put(`/api/blogs/${invalidId}`)
-        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(blog)
         .expect(404)
     })
@@ -211,7 +209,6 @@ describe('when there are initially some blogs saved', () => {
       
       await api
         .put(`/api/blogs/${blogToUpdate.id}`)
-        .set({ Authorization: `Bearer ${await obtainToken()}` })
         .send(blogWithoutProperties)
         .expect(400)
       
