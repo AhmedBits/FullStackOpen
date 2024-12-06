@@ -68,13 +68,6 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
     })
   }
 
-  const user = request.user
-  if (blogToUpdate.user.toString() !== user.id) {
-    return response.status(401).json({
-      error: 'Action limited to blog creator'
-    })
-  }
-
   const result = await Blog
     .findByIdAndUpdate(blogToUpdate.id, updatedBlog, { new: true })
 
