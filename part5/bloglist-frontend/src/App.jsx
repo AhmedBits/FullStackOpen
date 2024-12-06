@@ -48,7 +48,7 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const handleLogin = async (event) => {
+  const handleLogin = async event => {
     event.preventDefault()
 
     try {
@@ -71,14 +71,14 @@ const App = () => {
     }
   }
 
-  const handleLogout = (event) => {
+  const handleLogout = event => {
     event.preventDefault()
 
     window.localStorage.removeItem('loggedUser')
     setUser(null)
   }
 
-  const handleBlogCreation = async (blogObject) => {
+  const handleBlogCreation = async blogObject => {
     try {
       blogFormRef.current.toggleVisibility()
       await blogService.create(blogObject)
@@ -95,6 +95,36 @@ const App = () => {
     } catch (exception) {
       setNotification({
         message: 'Failed to add blog - try logging in again',
+        type: 'error'
+      })
+    }
+  }
+
+  const handleLike = async blog => {
+    try {
+      const updatedBlog = {
+        user: blog.user.id,
+        likes: blog.likes + 1,
+        author: blog.author,
+        title: blog.title,
+        url: blog.url
+      }
+      
+      await blogService.update(
+        blog.id,
+        updatedBlog
+      )
+
+      setNotification({
+        message: `Liked "${updatedBlog.title}"`,
+        type: 'success'
+      })
+
+      const blogs = await blogService.getAll()
+      setBlogs(blogs)
+    } catch (exception) {
+      setNotification({
+        message: 'Failed to like blog',
         type: 'error'
       })
     }
@@ -155,7 +185,11 @@ const App = () => {
         />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog 
+          key={blog.id}
+          blog={blog}
+          addLike={handleLike}
+        />
       )}
     </div>
   )

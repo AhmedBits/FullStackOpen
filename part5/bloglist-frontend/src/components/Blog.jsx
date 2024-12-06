@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Button from './Button'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLike }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const showWhenExpanded = { display : showDetails ? '' : 'none' }
@@ -36,6 +36,7 @@ const Blog = ({ blog }) => {
         <div>
           likes {blog.likes}
           <Button
+            handleClick={() => addLike(blog)}
             label='like'
           />
         </div>
