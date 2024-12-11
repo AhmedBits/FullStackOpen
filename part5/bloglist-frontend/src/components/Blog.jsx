@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import Button from './Button'
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ username, blog, addLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const showWhenExpanded = { display : showDetails ? '' : 'none' }
   const hideWhenExpanded = { display : showDetails ? 'none' : '' }
+
+  const showDelete = username === blog.user.username
+  const showWhenCreator = { display : showDelete ? '' : 'none' }
 
   const toggleDetails = () => {
     setShowDetails(!showDetails)
@@ -42,6 +45,12 @@ const Blog = ({ blog, addLike }) => {
         </div>
         <div>
           {blog.user.name}
+        </div>
+        <div style={showWhenCreator}>
+          <Button
+            handleClick={() => handleDelete(blog)}
+            label='remove'
+          />
         </div>
       </div>
     </div>
