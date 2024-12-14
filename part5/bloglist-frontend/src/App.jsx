@@ -19,9 +19,11 @@ const App = () => {
   })
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    const fetchBlogs = async () => {
+      const blogs =  await blogService.getAll()
+      setBlogs(blogs)
+    }
+    fetchBlogs()
   }, [])
 
   useEffect(() => {
@@ -82,13 +84,13 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility()
       await blogService.create(blogObject)
-      const {title, author} = blogObject
-      
+      const { title, author } = blogObject
+
       setNotification({
         message: `a new blog "${title}" by ${author} is added`,
         type: 'success'
       })
-      
+
       // Update blogs
       const blogs = await blogService.getAll()
       setBlogs(blogs)
@@ -109,7 +111,7 @@ const App = () => {
         title: blog.title,
         url: blog.url
       }
-      
+
       await blogService.update(
         blog.id,
         updatedBlog
@@ -201,13 +203,16 @@ const App = () => {
         />
       </div>
       <br></br>
-      <Togglable buttonLabel={'create new blog'} ref={blogFormRef}>
+      <Togglable
+        buttonLabel={'create new blog'}
+        ref={blogFormRef}
+      >
         <BlogForm
           createBlog={handleBlogCreation}
         />
       </Togglable>
       {sortedBlogs.map(blog =>
-        <Blog 
+        <Blog
           username={user.username}
           key={blog.id}
           blog={blog}

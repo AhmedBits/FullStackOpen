@@ -1,6 +1,6 @@
-import { useState } from "react"
-import InputField from "./InputField"
-import Button from "./Button"
+import { useState } from 'react'
+import InputField from './InputField'
+import Button from './Button'
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')

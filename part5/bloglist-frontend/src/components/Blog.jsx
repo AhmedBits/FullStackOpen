@@ -13,7 +13,7 @@ const Blog = ({ username, blog, addLike, handleDelete }) => {
   const toggleDetails = () => {
     setShowDetails(!showDetails)
   }
-  
+
   return (
     <div className="blog">
       <div style={hideWhenExpanded}>
