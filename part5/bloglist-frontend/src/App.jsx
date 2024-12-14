@@ -4,14 +4,12 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
-import InputField from './components/InputField'
 import Button from './components/Button'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [updateBlogs, setUpdateBlogs] = useState(false)
   const [notification, setNotification] = useState({
@@ -53,9 +51,7 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const handleLogin = async event => {
-    event.preventDefault()
-
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
         username, password,
@@ -66,8 +62,6 @@ const App = () => {
       )
       setUser(user)
       blogService.setToken(user.token)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       setNotification({
         message: 'Invalid Username/Password',
@@ -154,33 +148,13 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <h2>Log in to application</h2>
         <Notification
           message={notification.message}
           type={notification.type}
         />
-        <form onSubmit={handleLogin}>
-          <InputField
-            text='Username: '
-            type="text"
-            value={username}
-            name="Username"
-            autoComplete="off"
-            handleChange={({ target }) => setUsername(target.value)}
-            required
-          />
-          <InputField
-            text='Password: '
-            type="password"
-            value={password}
-            name="Password"
-            handleChange={({ target }) => setPassword(target.value)}
-            required
-          />
-          <Button
-            label='Login'
-          />
-        </form>
+        <LoginForm
+          handleLogin={handleLogin}
+        />
       </div>
     )
   }
@@ -200,10 +174,7 @@ const App = () => {
         />
       </div>
       <br></br>
-      <Togglable
-        buttonLabel={'create new blog'}
-        ref={blogFormRef}
-      >
+      <Togglable buttonLabel={'create new blog'} ref={blogFormRef}>
         <BlogForm
           createBlog={handleBlogCreation}
         />
