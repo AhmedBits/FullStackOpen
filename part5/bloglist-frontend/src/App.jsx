@@ -13,6 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [updateBlogs, setUpdateBlogs] = useState(false)
   const [notification, setNotification] = useState({
     message: null,
     type: null
@@ -21,10 +22,12 @@ const App = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       const blogs =  await blogService.getAll()
+      blogs.sort((a, b) => b.likes - a.likes)
       setBlogs(blogs)
+      setUpdateBlogs(false)
     }
     fetchBlogs()
-  }, [])
+  }, [updateBlogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -91,9 +94,7 @@ const App = () => {
         type: 'success'
       })
 
-      // Update blogs
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      setUpdateBlogs(true)
     } catch (exception) {
       setNotification({
         message: 'Failed to add blog - try logging in again',
@@ -122,8 +123,7 @@ const App = () => {
         type: 'success'
       })
 
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      setUpdateBlogs(true)
     } catch (exception) {
       setNotification({
         message: 'Failed to like blog',
@@ -141,8 +141,7 @@ const App = () => {
           type: 'success'
         })
 
-        const blogs = await blogService.getAll()
-        setBlogs(blogs)
+        setUpdateBlogs(true)
       } catch (exception) {
         setNotification({
           message: 'Failed to delete blog',
@@ -186,8 +185,6 @@ const App = () => {
     )
   }
 
-  const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
-
   return (
     <div>
       <h2>blogs</h2>
@@ -211,7 +208,7 @@ const App = () => {
           createBlog={handleBlogCreation}
         />
       </Togglable>
-      {sortedBlogs.map(blog =>
+      {blogs.map(blog =>
         <Blog
           username={user.username}
           key={blog.id}
