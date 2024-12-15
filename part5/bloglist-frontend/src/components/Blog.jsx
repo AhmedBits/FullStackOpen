@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import Button from './Button'
 
-const Blog = ({ username, blog, addLike, handleDelete }) => {
+const Blog = ({ blog, username, addLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const showWhenExpanded = { display : showDetails ? '' : 'none' }
@@ -21,7 +22,7 @@ const Blog = ({ username, blog, addLike, handleDelete }) => {
           {blog.title} {blog.author}
           <Button
             handleClick={toggleDetails}
-            label='view'
+            label='View'
           />
         </div>
       </div>
@@ -30,7 +31,7 @@ const Blog = ({ username, blog, addLike, handleDelete }) => {
           {blog.title} {blog.author}
           <Button
             handleClick={toggleDetails}
-            label='hide'
+            label='Hide'
           />
         </div>
         <div>
@@ -40,7 +41,7 @@ const Blog = ({ username, blog, addLike, handleDelete }) => {
           likes {blog.likes}
           <Button
             handleClick={() => addLike(blog)}
-            label='like'
+            label='Like'
           />
         </div>
         <div>
@@ -49,12 +50,19 @@ const Blog = ({ username, blog, addLike, handleDelete }) => {
         <div style={showWhenCreator}>
           <Button
             handleClick={() => handleDelete(blog)}
-            label='remove'
+            label='Remove'
           />
         </div>
       </div>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  username: PropTypes.string.isRequired,
+  addLike: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
 }
 
 export default Blog

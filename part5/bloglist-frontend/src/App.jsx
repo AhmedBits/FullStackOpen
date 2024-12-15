@@ -154,6 +154,7 @@ const App = () => {
         />
         <LoginForm
           handleLogin={handleLogin}
+          buttonLabel='Login'
         />
       </div>
     )
@@ -174,16 +175,17 @@ const App = () => {
         />
       </div>
       <br></br>
-      <Togglable buttonLabel={'create new blog'} ref={blogFormRef}>
+      <Togglable buttonLabel='Create new blog' ref={blogFormRef}>
         <BlogForm
           createBlog={handleBlogCreation}
+          buttonLabel='Create'
         />
       </Togglable>
       {blogs.map(blog =>
         <Blog
-          username={user.username}
           key={blog.id}
           blog={blog}
+          username={user.username}
           addLike={handleLike}
           handleDelete={handleDelete}
         />

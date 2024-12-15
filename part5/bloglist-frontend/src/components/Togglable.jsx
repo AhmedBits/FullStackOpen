@@ -1,6 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
-import Button from './Button'
 import PropTypes from 'prop-types'
+import Button from './Button'
 
 const Togglable = forwardRef((props, refs) => {
   const [formVisible, setFormVisible] = useState(false)
@@ -30,7 +30,7 @@ const Togglable = forwardRef((props, refs) => {
         {props.children}
         <Button
           handleClick={toggleVisibility}
-          label='close'
+          label='Close'
         />
       </div>
     </div>

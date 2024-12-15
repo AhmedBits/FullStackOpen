@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import InputField from './InputField'
 import Button from './Button'
 
-const LoginForm = ({ handleLogin }) => {
+const LoginForm = ({ handleLogin, buttonLabel }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -36,11 +37,16 @@ const LoginForm = ({ handleLogin }) => {
           required
         />
         <Button
-          label='Login'
+          label={buttonLabel}
         />
       </form>
     </div>
   )
+}
+
+LoginForm.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  buttonLabel: PropTypes.string.isRequired
 }
 
 export default LoginForm

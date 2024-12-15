@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import InputField from './InputField'
 import Button from './Button'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ createBlog, buttonLabel }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -46,11 +47,16 @@ const BlogForm = ({ createBlog }) => {
           handleChange={event => setUrl(event.target.value)}
         />
         <Button
-          label='create'
+          label={buttonLabel}
         />
       </form>
     </div>
   )
+}
+
+BlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+  buttonLabel: PropTypes.string.isRequired
 }
 
 export default BlogForm
