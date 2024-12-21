@@ -36,7 +36,6 @@ const App = () => {
     }
   }, [])
 
-  // Clears notifications
   useEffect(() => {
     if (notification.message) {
       const timeout = setTimeout(() => {
