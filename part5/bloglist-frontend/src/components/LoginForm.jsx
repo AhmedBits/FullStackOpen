@@ -23,16 +23,18 @@ const LoginForm = ({ handleLogin, buttonLabel }) => {
           text='Username: '
           type="text"
           value={username}
-          name="Username"
-          autoComplete="off"
+          name='Username'
+          autoComplete='off'
+          id='username'
           handleChange={event => setUsername(event.target.value)}
           required
         />
         <InputField
           text='Password: '
-          type="password"
+          type='password'
           value={password}
-          name="Password"
+          name='Password'
+          id='password'
           handleChange={event => setPassword(event.target.value)}
           required
         />

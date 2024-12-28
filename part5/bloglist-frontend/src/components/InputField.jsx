@@ -3,7 +3,8 @@ const InputField = ({
   type,
   value,
   name,
-  handleChange
+  handleChange,
+  id
 }) => {
   return (
     <div>
@@ -13,8 +14,9 @@ const InputField = ({
         value={value}
         name={name}
         onChange={handleChange}
+        id={id}
         required
-        autoComplete="off"
+        autoComplete='off'
       />
     </div>
   )
