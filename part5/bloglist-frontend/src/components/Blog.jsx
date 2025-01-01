@@ -17,7 +17,7 @@ const Blog = ({ blog, username, addLike, handleDelete }) => {
 
   return (
     <div className="blog">
-      <div style={hideWhenExpanded}>
+      <div style={hideWhenExpanded} className='defaultView'>
         <div>
           {blog.title} {blog.author}
           <Button
@@ -26,7 +26,7 @@ const Blog = ({ blog, username, addLike, handleDelete }) => {
           />
         </div>
       </div>
-      <div style={showWhenExpanded}>
+      <div style={showWhenExpanded} className='expandedView'>
         <div>
           {blog.title} {blog.author}
           <Button
