@@ -4,36 +4,30 @@ import Button from './Button'
 
 const Blog = ({ blog, username, addLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
+  const [buttonLabel, setButtonLabel] = useState('View')
 
   const showWhenExpanded = { display : showDetails ? '' : 'none' }
-  const hideWhenExpanded = { display : showDetails ? 'none' : '' }
 
   const showDelete = username === blog.user.username
   const showWhenCreator = { display : showDelete ? '' : 'none' }
 
   const toggleDetails = () => {
     setShowDetails(!showDetails)
+    setButtonLabel(showDetails ? 'View' : 'Hide')
   }
 
   return (
     <div className="blog">
-      <div style={hideWhenExpanded} className='defaultView'>
+      <div>
         <div>
           {blog.title} {blog.author}
           <Button
             handleClick={toggleDetails}
-            label='View'
+            label={buttonLabel}
           />
         </div>
       </div>
-      <div style={showWhenExpanded} className='expandedView'>
-        <div>
-          {blog.title} {blog.author}
-          <Button
-            handleClick={toggleDetails}
-            label='Hide'
-          />
-        </div>
+      <div style={showWhenExpanded}>
         <div>
           {blog.url}
         </div>
