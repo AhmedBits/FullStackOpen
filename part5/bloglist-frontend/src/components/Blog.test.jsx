@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { findByText, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 test('<Blog /> renders title and author, but not url and likes by default', () => {
@@ -12,9 +13,10 @@ test('<Blog /> renders title and author, but not url and likes by default', () =
     }
   }
 
-  const { container } = render(<Blog blog={blog} />)
+  render(<Blog blog={blog} />)
 
-  const defaultView = container.querySelector('.defaultView')
-  expect(defaultView).toHaveTextContent('a title an author')
-  expect(defaultView).not.toHaveTextContent('a url 0')
+  const titleAndAuthor = screen.getByText('a title an author')
+  const urlAndLikes = screen.queryByText('a url 0 likes')
+  expect(titleAndAuthor).toBeDefined()
+  expect(urlAndLikes).toBeNull()
 })
