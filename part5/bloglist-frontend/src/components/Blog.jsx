@@ -6,8 +6,6 @@ const Blog = ({ blog, username, addLike, handleDelete }) => {
   const [showDetails, setShowDetails] = useState(false)
   const [buttonLabel, setButtonLabel] = useState('View')
 
-  const showWhenExpanded = { display : showDetails ? '' : 'none' }
-
   const showDelete = username === blog.user.username
   const showWhenCreator = { display : showDelete ? '' : 'none' }
 
@@ -27,27 +25,29 @@ const Blog = ({ blog, username, addLike, handleDelete }) => {
           />
         </div>
       </div>
-      <div style={showWhenExpanded}>
+      {showDetails && (
         <div>
-          {blog.url}
+          <div>
+            {blog.url}
+          </div>
+          <div>
+            likes {blog.likes}
+            <Button
+              handleClick={() => addLike(blog)}
+              label='Like'
+            />
+          </div>
+          <div>
+            {blog.user.name}
+          </div>
+          <div style={showWhenCreator}>
+            <Button
+              handleClick={() => handleDelete(blog)}
+              label='Remove'
+            />
+          </div>
         </div>
-        <div>
-          likes {blog.likes}
-          <Button
-            handleClick={() => addLike(blog)}
-            label='Like'
-          />
-        </div>
-        <div>
-          {blog.user.name}
-        </div>
-        <div style={showWhenCreator}>
-          <Button
-            handleClick={() => handleDelete(blog)}
-            label='Remove'
-          />
-        </div>
-      </div>
+      )}
     </div>
   )
 }
