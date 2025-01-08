@@ -32,6 +32,7 @@ const BlogForm = ({ createBlog, buttonLabel }) => {
           value={title}
           handleChange={event => setTitle(event.target.value)}
           id='title'
+          placeholder='Title of the blog'
         />
         <InputField
           text='Author: '
@@ -40,6 +41,7 @@ const BlogForm = ({ createBlog, buttonLabel }) => {
           value={author}
           handleChange={event => setAuthor(event.target.value)}
           id='author'
+          placeholder='Name of the author'
         />
         <InputField
           text='Url: '
@@ -48,6 +50,7 @@ const BlogForm = ({ createBlog, buttonLabel }) => {
           value={url}
           handleChange={event => setUrl(event.target.value)}
           id='url'
+          placeholder='Enter a valid Url'
         />
         <Button
           label={buttonLabel}

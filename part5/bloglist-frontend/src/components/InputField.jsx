@@ -4,7 +4,8 @@ const InputField = ({
   value,
   name,
   handleChange,
-  id
+  id,
+  placeholder
 }) => {
   return (
     <div>
@@ -15,6 +16,7 @@ const InputField = ({
         name={name}
         onChange={handleChange}
         id={id}
+        placeholder={placeholder}
         required
         autoComplete='off'
       />
