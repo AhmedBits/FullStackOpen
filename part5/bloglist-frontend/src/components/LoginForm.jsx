@@ -26,6 +26,7 @@ const LoginForm = ({ handleLogin, buttonLabel }) => {
           name='Username'
           autoComplete='off'
           id='username'
+          dataTestId='username'
           handleChange={event => setUsername(event.target.value)}
           required
         />
@@ -35,6 +36,7 @@ const LoginForm = ({ handleLogin, buttonLabel }) => {
           value={password}
           name='Password'
           id='password'
+          dataTestId='password'
           handleChange={event => setPassword(event.target.value)}
           required
         />
