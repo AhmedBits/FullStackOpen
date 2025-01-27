@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const { loginWith } = require('./helper')
+const { loginWith, createBlog } = require('./helper')
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
@@ -41,11 +41,7 @@ describe('Blog app', () => {
     })
   
     test('a new blog can be created', async ({ page }) => {
-      await page.getByRole('button', { name: 'Create new blog' }).click()
-      await page.getByTestId('title').fill('Test Title')
-      await page.getByTestId('author').fill('Test Author')
-      await page.getByTestId('url').fill('https://www.google.com/')
-      await page.getByRole('button', { name: 'Create' }).click()
+      await createBlog(page, 'Test Title', 'Test Author', 'https://www.google.com/')
       await expect(page.getByText('Test Title Test Author')).toBeVisible()
 
       const successDiv = await page.locator('.success')
