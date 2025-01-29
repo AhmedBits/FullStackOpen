@@ -1,6 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 const { loginWith, createBlog } = require('./helper')
-const exp = require('constants')
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
@@ -10,6 +9,13 @@ describe('Blog app', () => {
         name: 'example',
         username: 'test user',
         password: 'hello'
+      }
+    })
+    await request.post('/api/users', {
+      data: {
+        name: 'viewer',
+        username: 'casual user',
+        password: 'bye'
       }
     })
     
@@ -53,7 +59,7 @@ describe('Blog app', () => {
       beforeEach(async ({ page }) => {
         await createBlog(page, 'Test Title', 'Test Author', 'https://www.google.com/')
         const blogElement = await page.getByText('Test Title Test Author')
-        await blogElement.getByRole('button', { name: 'view' }).click()
+        await blogElement.getByRole('button', { name: 'View' }).click()
       })
 
       test('a user can like a blog', async ({ page }) => {
@@ -70,6 +76,19 @@ describe('Blog app', () => {
 
         const successDiv = await page.locator('.success')
         await expect(successDiv).toHaveCSS('color', 'rgb(0, 128, 0)')
+      })
+
+      describe('and logged into another account', () => {
+        beforeEach(async ({ page }) => {
+          await page.getByRole('button', { name: 'Logout' }).click()
+          await loginWith(page, 'casual user', 'bye')
+        })
+
+        test('delete button is not visible', async ({ page }) => {
+          const blogElement = await page.getByText('Test Title Test Author')
+          await blogElement.getByRole('button', { name: 'View' }).click()
+          await expect(page.getByRole('button', { name: 'Remove' })).not.toBeVisible()
+        })
       })
     })
   })
