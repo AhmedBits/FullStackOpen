@@ -52,15 +52,24 @@ describe('Blog app', () => {
     describe('and a blog exists', () => {
       beforeEach(async ({ page }) => {
         await createBlog(page, 'Test Title', 'Test Author', 'https://www.google.com/')
+        const blogElement = await page.getByText('Test Title Test Author')
+        await blogElement.getByRole('button', { name: 'view' }).click()
       })
 
       test('a user can like a blog', async ({ page }) => {
-        const blogElement = await page.getByText('Test Title Test Author')
-        await blogElement.getByRole('button', { name: 'view' }).click()
-
         await expect(page.getByText('Likes 0')).toBeVisible()
-        await page.getByRole('button', { name: 'like' }).click()
+        await page.getByRole('button', { name: 'Like' }).click()
         await expect(page.getByText('Likes 1')).toBeVisible()
+      })
+
+      test('creator can delete a blog', async ({ page }) => {
+        await expect(page.getByText('Test Title Test Author')).toBeVisible()
+        page.on('dialog', dialog => dialog.accept())
+        await page.getByRole('button', { name: 'Remove' }).click()
+        await expect(page.getByText('Test Title Test Author')).not.toBeVisible()
+
+        const successDiv = await page.locator('.success')
+        await expect(successDiv).toHaveCSS('color', 'rgb(0, 128, 0)')
       })
     })
   })
