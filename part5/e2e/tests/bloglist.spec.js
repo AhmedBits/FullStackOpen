@@ -1,5 +1,6 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 const { loginWith, createBlog } = require('./helper')
+const exp = require('constants')
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
@@ -89,6 +90,29 @@ describe('Blog app', () => {
           await blogElement.getByRole('button', { name: 'View' }).click()
           await expect(page.getByRole('button', { name: 'Remove' })).not.toBeVisible()
         })
+      })
+    })
+    
+    describe('and blogs exist', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'blog with no likes', 'second', 'https://www.google.com/')
+        await page.getByRole('button', { name: 'View' }).click()
+
+        await createBlog(page, 'blog with likes', 'first', 'https://www.google.com/')
+        await page.getByRole('button', { name: 'View' }).click()
+      })
+
+      test('blogs are ordered by likes', async ({ page }) => {
+        const blogsBefore = await page.locator('.blog')
+        await expect(blogsBefore.first()).toContainText('blog with no likes')
+        await expect(blogsBefore.last()).toContainText('blog with likes')
+
+        const blogToLike = blogsBefore.last()
+        await blogToLike.getByRole('button', { name: 'Like' }).click()
+
+        const blogsAfter = await page.locator('.blog')
+        await expect(blogsAfter.first()).toContainText('blog with likes')
+        await expect(blogsAfter.last()).toContainText('blog with no likes')
       })
     })
   })
