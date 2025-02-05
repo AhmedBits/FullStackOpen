@@ -18,7 +18,6 @@ describe('Blog app', () => {
         password: 'bye'
       }
     })
-    
     await page.goto('/')
   })
 
