@@ -98,13 +98,23 @@ const App = () => {
 
   const handleLike = async blog => {
     try {
-      const updatedBlog = {
+      const blogBase = {
         user: blog.user.id,
-        likes: blog.likes + 1,
         author: blog.author,
         title: blog.title,
         url: blog.url
       }
+
+      const updatedBlog = blog.likedBy.includes(user.username)
+        ? {
+          ...blogBase,
+          likes: blog.likes - 1,
+          likedBy: blog.likedBy.filter(likedBy => likedBy !== user.username)
+        } : {
+          ...blogBase,
+          likes: blog.likes + 1,
+          likedBy: blog.likedBy.concat(user.username)
+        }
 
       await blogService.update(
         blog.id,
