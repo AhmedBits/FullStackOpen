@@ -8,6 +8,7 @@ const Blog = ({ blog, username, addLike, handleDelete }) => {
 
   const showDelete = username === blog.user.username
   const showWhenCreator = { display : showDelete ? '' : 'none' }
+  const isLikedByUser = blog.likedBy.includes(username)
 
   const toggleDetails = () => {
     setShowDetails(!showDetails)
@@ -34,7 +35,7 @@ const Blog = ({ blog, username, addLike, handleDelete }) => {
             likes {blog.likes}
             <Button
               handleClick={() => addLike(blog)}
-              label='Like'
+              label={isLikedByUser ? 'Unlike' : 'Like'}
             />
           </div>
           <div>

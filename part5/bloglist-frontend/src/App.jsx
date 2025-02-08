@@ -98,31 +98,28 @@ const App = () => {
 
   const handleLike = async blog => {
     try {
-      const blogBase = {
-        user: blog.user.id,
-        author: blog.author,
-        title: blog.title,
-        url: blog.url
+      const { id, likedBy, user, author, title, url, likes } = blog
+      const isLiked = likedBy.includes(user.username)
+
+      const updatedBlog = {
+        user: user.id,
+        author,
+        title,
+        url,
+        likes: isLiked ? likes - 1 : likes + 1,
+        likedBy: isLiked
+          ? likedBy.filter(like => like !== user.username)
+          : likedBy.concat(user.username)
       }
 
-      const updatedBlog = blog.likedBy.includes(user.username)
-        ? {
-          ...blogBase,
-          likes: blog.likes - 1,
-          likedBy: blog.likedBy.filter(likedBy => likedBy !== user.username)
-        } : {
-          ...blogBase,
-          likes: blog.likes + 1,
-          likedBy: blog.likedBy.concat(user.username)
-        }
+      await blogService.update(id, updatedBlog)
 
-      await blogService.update(
-        blog.id,
-        updatedBlog
-      )
+      const message = isLiked
+        ? `Unliked "${title}"`
+        : `Liked "${title}"`
 
       setNotification({
-        message: `Liked "${updatedBlog.title}"`,
+        message,
         type: 'success'
       })
 
