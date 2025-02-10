@@ -44,6 +44,13 @@ const LoginForm = ({ handleLogin, buttonLabel }) => {
           label={buttonLabel}
         />
       </form>
+      <br></br>
+      <div>
+         Register here
+        <Button
+          label='Register'
+        />
+      </div>
     </div>
   )
 }
