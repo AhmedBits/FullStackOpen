@@ -69,6 +69,10 @@ const App = () => {
     }
   }
 
+  const handleRegister = async (username, password, name) => {
+
+  }
+
   const handleLogout = event => {
     event.preventDefault()
 
@@ -160,7 +164,7 @@ const App = () => {
         />
         <LoginForm
           handleLogin={handleLogin}
-          buttonLabel='Login'
+          handleRegister={handleRegister}
         />
       </div>
     )
