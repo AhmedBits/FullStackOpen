@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
@@ -69,7 +70,7 @@ const App = () => {
     }
   }
 
-  const handleRegister = async (username, password, name) => {
+  const handleRegister = async (username, password, confirmPassword, name) => {
 
   }
 
