@@ -70,8 +70,28 @@ const App = () => {
     }
   }
 
-  const handleRegister = async (username, password, confirmPassword, name) => {
+  const handleRegister = async (name, username, password, confirmPassword) => {
+    try {
+      if (password !== confirmPassword) {
+        return setNotification({
+          message: 'Passwords do not match, try again',
+          type: 'error'
+        })
+      }
 
+      await userService.register({ name, username, password })
+      await handleLogin(username, password)
+
+      setNotification({
+        message: `Welcome to the bloglist, ${username}!`,
+        type: 'success'
+      })
+    } catch (exception) {
+      setNotification({
+        message: 'Username is taken, please select another',
+        type: 'error'
+      })
+    }
   }
 
   const handleLogout = event => {

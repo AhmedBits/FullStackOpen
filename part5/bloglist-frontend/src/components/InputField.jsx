@@ -21,6 +21,7 @@ const InputField = ({
         data-testid={dataTestId}
         required
         autoComplete='off'
+        minLength={3}
       />
     </div>
   )

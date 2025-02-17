@@ -15,12 +15,13 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
     if (loginMode) {
       await handleLogin(username, password)
     } else {
-      await handleRegister(username, password, confirmPassword, name)
+      await handleRegister(name, username, password, confirmPassword)
     }
 
     setName('')
     setUsername('')
     setPassword('')
+    setConfirmPassword('')
   }
 
   const buttonLabel = loginMode
