@@ -33,7 +33,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
   }
 
   return (
-    <div>
+    <div className='login-form'>
       <h2>
         {loginMode ? 'Login to application' : 'Create your account'}
       </h2>
