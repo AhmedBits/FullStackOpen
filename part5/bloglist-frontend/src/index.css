@@ -25,6 +25,14 @@ body {
   color: red;
 }
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 25px;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+
 .blog {
   padding-top: 10px;
   padding-left: 2px;
