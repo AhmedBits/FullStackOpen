@@ -9,7 +9,7 @@ const InputField = ({
   placeholder
 }) => {
   return (
-    <div>
+    <div className="input-field">
       {text}
       <input
         type={type}

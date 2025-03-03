@@ -87,7 +87,6 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
           label={loginMode ? 'Login' : 'Register'}
         />
       </form>
-      <br />
       <div>
         <Button
           label={buttonLabel}

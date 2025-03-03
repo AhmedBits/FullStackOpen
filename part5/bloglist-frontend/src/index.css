@@ -28,7 +28,10 @@ body {
 .login-form {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 35px;
+  margin: 10px;
   border-radius: 25px;
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
 }
@@ -39,4 +42,32 @@ body {
   border: solid;
   border-width: 2px;
   margin-bottom: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.input-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input {
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+button {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 5px;
+  flex: 1;
 }
