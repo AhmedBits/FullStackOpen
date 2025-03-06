@@ -22,7 +22,7 @@ const BlogForm = ({ createBlog, buttonLabel }) => {
   }
 
   return (
-    <div>
+    <div className='blog-form'>
       <h2>Create a new Blog</h2>
       <form onSubmit={handleSubmit}>
         <InputField
