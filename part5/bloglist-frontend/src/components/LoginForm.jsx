@@ -25,8 +25,8 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
   }
 
   const buttonLabel = loginMode
-    ? 'Don\'t have an account? Register here'
-    : 'Already have an account? Login here'
+    ? 'Don\'t have an account? Click here to Register'
+    : 'Already have an account? Click here to Login'
 
   const toggleMode = () => {
     setLoginMode(!loginMode)
@@ -88,10 +88,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
         />
       </form>
       <div>
-        <Button
-          label={buttonLabel}
-          handleClick={toggleMode}
-        />
+        <p className='toggleText' onClick={toggleMode}>{buttonLabel}</p>
       </div>
     </div>
   )

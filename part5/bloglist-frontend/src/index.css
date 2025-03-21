@@ -57,6 +57,11 @@ form {
   align-items: center;
 }
 
+.toggleText {
+  cursor: pointer;
+  font-weight: bold;      
+}
+
 input {
   border: 1px solid;
   border-radius: 10px;
@@ -64,10 +69,7 @@ input {
 }
 
 button {
-  display: flex;
-  flex-direction: column;
   border: 1px solid;
   border-radius: 10px;
   padding: 5px;
-  flex: 1;
 }
