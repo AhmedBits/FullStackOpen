@@ -35,12 +35,12 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
   return (
     <div className='login-form'>
       <h2>
-        {loginMode ? 'Login to application' : 'Create your account'}
+        {loginMode ? 'Login to bloglist' : 'Create your account'}
       </h2>
       <form onSubmit={handleSubmit}>
         {!loginMode && (
           <InputField
-            text='Name: '
+            placeholder='Name'
             type='text'
             value={name}
             name='Name'
@@ -51,7 +51,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
           />
         )}
         <InputField
-          text='Username: '
+          placeholder='Username'
           type='text'
           value={username}
           name='Username'
@@ -62,7 +62,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
           required
         />
         <InputField
-          text='Password: '
+          placeholder='Password'
           type='password'
           value={password}
           name='Password'
@@ -73,7 +73,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
         />
         {!loginMode && (
           <InputField
-            text='Confirm Password: '
+            placeholder='Confirm Password'
             type='password'
             value={confirmPassword}
             name='confirmPassword'
@@ -84,6 +84,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
           />
         )}
         <Button
+          className='login-button'
           label={loginMode ? 'Login' : 'Register'}
         />
       </form>
