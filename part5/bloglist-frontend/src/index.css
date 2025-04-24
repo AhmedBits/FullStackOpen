@@ -67,20 +67,28 @@ h2 {
   font-size: 30px;
 }
 
-input, .login-button {
-  border: 1px solid;
+input, .button {
   border-radius: 20px;
   padding: 10px;
   font-size: 16px;
 }
 
-.login-button {
-  color: white;
+input {
+  border: 1px solid;
+  height: 20px;
+  width: 300px;
+}
+
+.button {
+  border: none;
   cursor: pointer;
+}
+
+.button--green {
+  color: white;
   background-color: rgb(13, 175, 13);
 }
 
-input {
-  height: 20px;
-  width: 300px;
+.button--muted {
+  background-color: rgb(224, 224, 224);
 }

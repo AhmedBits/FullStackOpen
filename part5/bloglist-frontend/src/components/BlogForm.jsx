@@ -26,36 +26,33 @@ const BlogForm = ({ createBlog, buttonLabel }) => {
       <h2>Create a new Blog</h2>
       <form onSubmit={handleSubmit}>
         <InputField
-          text='Title: '
+          placeholder='Title of the blog'
           type='text'
           name='title'
           value={title}
           handleChange={event => setTitle(event.target.value)}
           id='title'
           dataTestId='title'
-          placeholder='Title of the blog'
         />
         <InputField
-          text='Author: '
+          placeholder='Name of the author'
           type='text'
           name='author'
           value={author}
           handleChange={event => setAuthor(event.target.value)}
           id='author'
           dataTestId='author'
-          placeholder='Name of the author'
         />
         <InputField
-          text='Url: '
+          placeholder='Enter a valid Url'
           type='url'
           name='url'
           value={url}
           handleChange={event => setUrl(event.target.value)}
           id='url'
           dataTestId='url'
-          placeholder='Enter a valid Url'
         />
-        <Button
+        <Button className='button button--green'
           label={buttonLabel}
         />
       </form>

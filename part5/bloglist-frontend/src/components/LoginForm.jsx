@@ -84,7 +84,7 @@ const LoginForm = ({ handleLogin, handleRegister }) => {
           />
         )}
         <Button
-          className='login-button'
+          className='button button--green'
           label={loginMode ? 'Login' : 'Register'}
         />
       </form>
