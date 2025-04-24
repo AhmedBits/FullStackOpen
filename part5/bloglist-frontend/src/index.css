@@ -36,6 +36,11 @@ body {
   box-shadow: rgba(17, 12, 46, 0.3) 0px 60px 120px 10px;
 }
 
+.blog-form {
+  display: flex;
+  flex-direction: column;
+}
+
 .blog {
   padding-top: 10px;
   padding-left: 2px;
