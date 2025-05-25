@@ -29,7 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   padding: 30px;
   margin: 10px;
   border-radius: 25px;
